@@ -5,14 +5,14 @@ GameBoy gb;
 int dotX[50];                  
 int dotY[50];                  
 int dotCount = 1;              
-int snakeX[10];
-int snakeY[10];
+int snakeX[10];       
+int snakeY[10];       
 
-int up = 0;
-int right = 1;
-int bottom = 2;
-int left = 3;
-int direction = right;
+int up = 0;  
+int right = 1;  
+int bottom = 2;  
+int left = 3;    
+int direction = right; 
 
 void setup() {  
   gb.begin(0);
@@ -24,34 +24,66 @@ void setup() {
 }
 int x = 1, y = 0;
 int dirX = 3, dirY = 7; 
+
+
 void makeMove(){
-  if(gb.getKey() == 4){  x = -1;  y = 0;  }
-  if(gb.getKey() == 5){  x = 1;   y = 0;  } 
-  if(gb.getKey() == 6){  x = 0;   y = 1;  }
-  if(gb.getKey() == 3){  x = 0;   y = -1; }
+  if(gb.getKey() == 4){  direction = left;  }
+  if(gb.getKey() == 5){  direction = right;  } 
+  if(gb.getKey() == 6){  direction = bottom;  }
+  if(gb.getKey() == 3){  direction = up; }
 }
+
+
+int lenSnake = 5;
+void move(){
+  for (int i = lenSnake -1; i > 0; i--){
+    snakeX[i] = snakeX[i - 1];
+    snakeY[i] = snakeY[i - 1];
+  }
+
+  if (direction == up){
+    if(snakeY[0] == 0){
+      snakeY[0] = 15;
+    }else{
+      snakeY[0]--;
+    }
+  }
+  
+  if (direction == bottom){
+    if(snakeY[0] == 15){
+      snakeY[0] = 0;
+    }else{
+      snakeY[0]++;
+    }
+  }
+  //--------------------------
+  if (direction == left){
+    if(snakeX[0] == 0){
+      snakeX[0] = 7;
+    }else{
+      snakeX[0]--;
+    }
+  }
+  //--------------------------
+  if (direction == right){
+    if(snakeX[0] == 7){
+      snakeX[0] = 0;
+    }else{
+      snakeX[0]++;
+    }
+  }
+}
+
+void drawSnake(){
+  for (int i =0; i < lenSnake; i++){
+    gb.drawPoint(snakeX[i], snakeY[i]);
+  }
+}
+
 void loop() { 
   makeMove();
-  dirX = dirX + x;
-  dirY = dirY + y;
-  if (dirX > 7) { dirX = 0; }
-  if (dirX < 0) { dirX = 7; }
-  if (dirY > 15) { dirY = 0; }
-  if (dirY < 0) { dirY = 15; }
-
-  for (int i = 0; i < dotCount; i = i + 1) {                  
-    if (dirX == dotX[i] && dirY == dotY[i]) {                 
-      dotX[i] = random(0, 8);                                 
-      dotY[i] = random(0, 16);                                
-      dotX[dotCount] = random(0, 8);                          
-      dotY[dotCount] = random(0, 16);                         
-    }                                                         
-  }                                                           
-  gb.clearDisplay();                                          
-
-  for (int i = 0; i < dotCount; i = i + 1) {                  
-    gb.drawPoint(dotX[i], dotY[i]);                           
-  }                                                           
-  gb.drawPoint(dirX, dirY);                                   
-  delay(300);                                                 
+  move();
+  gb.clearDisplay();
+  drawSnake();                             
+  delay(250);                                                 
 }
