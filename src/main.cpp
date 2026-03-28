@@ -2,14 +2,25 @@
 #include <GameBoyFixVal.h>
 GameBoy gb;
 
-int dotX[50];                  //✅
-int dotY[50];                  //✅
-int dotCount = 1;              //✅
+int dotX[50];                  
+int dotY[50];                  
+int dotCount = 1;              
+int snakeX[10];
+int snakeY[10];
+
+int up = 0;
+int right = 1;
+int bottom = 2;
+int left = 3;
+int direction = right;
+
 void setup() {  
   gb.begin(0);
+  snakeX[0] = 4;
+  snakeY[0] = 7;
   randomSeed(analogRead(0));   
-  dotX[0] = random(0, 8);      //✅
-  dotY[0] = random(0, 16);     //✅
+  dotX[0] = random(0, 8);      
+  dotY[0] = random(0, 16);     
 }
 int x = 1, y = 0;
 int dirX = 3, dirY = 7; 
@@ -28,19 +39,19 @@ void loop() {
   if (dirY > 15) { dirY = 0; }
   if (dirY < 0) { dirY = 15; }
 
-  for (int i = 0; i < dotCount; i = i + 1) {                  //✅
-    if (dirX == dotX[i] && dirY == dotY[i]) {                 //✅
-      dotX[i] = random(0, 8);                                 //✅
-      dotY[i] = random(0, 16);                                //✅
-      dotX[dotCount] = random(0, 8);                          //✅
-      dotY[dotCount] = random(0, 16);                         //✅
-    }                                                         //✅
-  }                                                           //✅
-  gb.clearDisplay();                                          //✅
+  for (int i = 0; i < dotCount; i = i + 1) {                  
+    if (dirX == dotX[i] && dirY == dotY[i]) {                 
+      dotX[i] = random(0, 8);                                 
+      dotY[i] = random(0, 16);                                
+      dotX[dotCount] = random(0, 8);                          
+      dotY[dotCount] = random(0, 16);                         
+    }                                                         
+  }                                                           
+  gb.clearDisplay();                                          
 
-  for (int i = 0; i < dotCount; i = i + 1) {                  //✅
-    gb.drawPoint(dotX[i], dotY[i]);                           //✅
-  }                                                           //✅
-  gb.drawPoint(dirX, dirY);                                   //✅
-  delay(300);                                                 //✅
+  for (int i = 0; i < dotCount; i = i + 1) {                  
+    gb.drawPoint(dotX[i], dotY[i]);                           
+  }                                                           
+  gb.drawPoint(dirX, dirY);                                   
+  delay(300);                                                 
 }
