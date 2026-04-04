@@ -14,6 +14,9 @@ int bottom = 2;
 int left = 3;    
 int direction = right; 
 
+
+int lenSnake = 5;
+
 void setup() {  
   gb.begin(0);
   snakeX[0] = 4;
@@ -25,17 +28,38 @@ void setup() {
 int x = 1, y = 0;
 int dirX = 3, dirY = 7; 
 
-
 void makeMove(){
-  if(gb.getKey() == 4){  direction = left;  }
-  if(gb.getKey() == 5){  direction = right;  } 
-  if(gb.getKey() == 6){  direction = bottom;  }
-  if(gb.getKey() == 3){  direction = up; }
+  if(gb.getKey() == 4 && direction != right){  direction = left;  }
+  if(gb.getKey() == 5 && direction != left) {  direction = right;  } 
+  if(gb.getKey() == 6 && direction != up)   {  direction = bottom;  }
+  if(gb.getKey() == 3 && direction != bottom){  direction = up; }
+}
+void loss()
+{
+  delay(2000);
+  gb.clearDisplay();
+  for(int i = 0; i < lenSnake; i++)
+  {
+    snakeX[i] = 0;
+    snakeY[i] = 0;
+  }
+  direction = right;
+  dotX[0] = 3;
+  dotY[0] = 3;
+  lenSnake = 4;
+  snakeX[0] = 4;
+  snakeY[0] = 7;
 }
 
 
-int lenSnake = 5;
 void move(){
+
+  for(int i = lenSnake - 1; i > 0; i--){
+    if(snakeX[0]==snakeX[i] && snakeY[0] == snakeY[i]){
+      loss();
+    }
+  }
+
   for (int i = lenSnake -1; i > 0; i--){
     snakeX[i] = snakeX[i - 1];
     snakeY[i] = snakeY[i - 1];
@@ -72,6 +96,7 @@ void move(){
       snakeX[0]++;
     }
   }
+  
 }
 
 void drawSnake(){
@@ -80,6 +105,8 @@ void drawSnake(){
   }
 }
 
+
+
 void loop() { 
   makeMove();
   move();
@@ -87,4 +114,4 @@ void loop() {
   drawSnake();                             
   delay(250);                                                 
 }
-//https://github.com/Dmitry-Krtadze/GameBoyRacer/
+//   https://github.com/Dmitry-Krtadze/GameBoyRacer/
