@@ -13,6 +13,7 @@ void loop() {
       }
     }
   }
+  
   delay(500);
   gb.clearDisplay();
   for (uint8_t y = 0; y < 8; y++) {
