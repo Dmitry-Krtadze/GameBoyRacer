@@ -18,13 +18,27 @@ void drawBlock(byte arr[4][4], int x, int y) {
   }
 }
 void makeMove() {
-  if (gb.getKey() == 4) {
-    x--;
-  }
-  if (gb.getKey() == 5) {
-    x++;
-  }
+    if (gb.getKey() == 4) {
+        if (!gb.checkBlockCollision(gb.block[rot], x - 1, y)) {
+            x --;
+        }
+    }
+
+    if (gb.getKey() == 5) {
+        if (!gb.checkBlockCollision(gb.block[rot], x + 1, y)) {
+        x++;
+        }
+    }
+    if (gb.getKey() == 6)
+    {
+        if(!gb.checkBlockCollision(gb.block[rot + 1], x+1,y))
+        {
+            if(rot == 3){ rot = 0;}
+            else{ rot++; }
+        }
+    } 
 }
+
 void createBlock(int num) {
   x = 2; y = -1; rot = random(0, 4);
   if (num == 0) gb.generateBlock(gb.block, I_Block_1, I_Block_2, I_Block_3, I_Block_4);
@@ -44,6 +58,16 @@ void setup() {
 }
 void loop() {
   makeMove();
+  if(gb.checkBlockCollision(gb.block[rot], x, y + 1))
+  {
+    gb.memBlock(gb.block[rot],x,y);
+    createBlock(random(0,7));
+  }
+  else{
+    y++;
+    delay(100);
+  }
+  // Назар Богдасенко
   gb.drawDisplay();
   drawBlock(gb.block[rot], x, y);
   y++;
