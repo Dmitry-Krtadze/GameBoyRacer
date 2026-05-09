@@ -5,6 +5,9 @@ GameBoy gb;
 int rot = 0;
 int x = 2, y = -1;
 
+int acc = 1;
+int speed = 200;
+
 void createBlock(int num); 
 
 
@@ -65,11 +68,10 @@ void loop() {
   }
   else{
     y++;
-    delay(100);
   }
-  // Назар Богдасенко
   gb.drawDisplay();
   drawBlock(gb.block[rot], x, y);
   y++;
-  delay(100);
+  delay(speed/acc);
 }
+// #Назар67Boy
