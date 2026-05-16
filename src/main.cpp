@@ -6,8 +6,42 @@ int rot = 0;
 int x = 2, y = -1;
 int acc = 1;
 int speed = 200;
-
+int level, score;
 void createBlock(int num);
+
+byte WIN [16][8] = {
+  {0, 0, 1, 0, 0, 0, 1, 0},
+  {0, 0, 1, 0, 0, 0, 1, 0},
+  {0, 0, 1, 0, 1, 0, 1, 0},
+  {0, 0, 0, 1, 0, 1, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 1, 1, 1, 0, 0},
+  {0, 0, 0, 0, 1, 0, 0, 0},
+  {0, 0, 0, 0, 1, 0, 0, 0},
+  {0, 0, 0, 1, 1, 1, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 1, 1, 0, 0, 1, 0},
+  {0, 0, 1, 0, 1, 0, 1, 0},
+  {0, 0, 1, 0, 0, 1, 1, 0},
+  {0, 0, 1, 0, 0, 0, 1, 0},
+};
+bool win(){
+  if(score >= 2){
+    return true;}
+  return false;
+}
+
+
+bool loss(){
+  if(gb.checkBlockCollision(gb.block[rot],x,0)){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 
 void drawBlock(byte arr[4][4], int x, int y)
 {
@@ -75,9 +109,31 @@ void setup()
   gb.begin(0);
   createBlock(random(0, 7));
 }
-int level, score;
-void loop()
-{
+
+void loop(){
+  if(win()== true){
+    for (int i = 0; i < 8; i++){
+      for (int j = 0; j < 16; j++){
+        gb.wipePoint(i,j);
+        gb.setLed(i,j,WIN[j][i]);
+      }
+    }
+    delay(20000);
+    gb.clearDisplay();
+    score = 0;
+    level = 0;
+  }
+
+  if(loss()==true){
+    for (int i = 0; i < 8; i++){
+      for (int j = 0; j < 16; j++){
+        gb.wipePoint(i,j);
+      }
+      gb.sound(COLLISION);
+      gb.testMatrix(10);
+    }
+  }
+
   makeMove();
   if(gb.checkBlockCollision(gb.block[rot],x,y+1)){
     gb.memBlock(gb.block[rot], x, y);
