@@ -4,7 +4,6 @@
 GameBoy gb;
 int rot = 0;
 int x = 2, y = -1;
-int lines = gb.fullLine();
 int acc = 1;
 int speed = 200;
 
@@ -40,7 +39,7 @@ void makeMove(){
   }
 
   if(gb.getKey() == 1){
-    if(!gb.checkBlockCollision(gb.block[rot + 1], x + 1, y)){
+    if(!gb.checkBlockCollision(gb.block[(rot + 1) % 4], x, y)){
       if (rot == 3) { rot = 0; }
       else          { rot++;   }
     }
@@ -97,4 +96,4 @@ void loop()
   drawBlock(gb.block[rot],x,y);
   delay(speed/acc);
 }
-// #Назар67Boy
+// #БУРМАЛДА
